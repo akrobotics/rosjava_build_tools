@@ -105,6 +105,13 @@ macro(catkin_rosjava_setup)
             add_dependencies(gradle-${PROJECT_NAME} ${depends}_generate_messages)
         endif()
     endforeach()
+
+    # If generate_rosjava_messages() is invoked, add dependency on artifact generation prior to building project
+    if (TARGET ${PROJECT_NAME}_generate_artifacts)
+        #message(STATUS "Adding dependency for generating artifacts")
+        add_dependencies(gradle-${PROJECT_NAME} ${PROJECT_NAME}_generate_artifacts)
+    endif()
+
     if(NOT TARGET gradle-clean)
         add_custom_target(gradle-clean)
     endif()
